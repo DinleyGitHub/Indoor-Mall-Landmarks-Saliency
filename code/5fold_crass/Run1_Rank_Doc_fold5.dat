@@ -1,0 +1,65 @@
+GP     Zhangxing     Hao     SVM     True
+BAC      ABC      ABC      BCA      ABC
+ACBD      BDCA      BDCA      DBAC      ABCD
+BADC      ABDC      ABDC      BCDA      BACD
+BAC      BAC      ABC      BCA      BCA
+CBA      ABC      ABC      CBA      CBA
+ACB      CBA      CBA      ABC      ACB
+CBA      BAC      BAC      BCA      CBA
+BCA      ABC      ACB      BCA      CBA
+ACB      ACB      ACB      CAB      ABC
+BCA      CBA      CBA      ABC      BCA
+ABC      BCA      BCA      BAC      ABC
+BCA      ACB      ACB      BCA      BAC
+BDAC      ACDB      ACDB      ABDC      BACD
+DCAB      ABCD      ABCD      DACB      DBAC
+DBAC      CADB      CADB      BDAC      BADC
+CDBA      CBDA      CBDA      ADBC      DBAC
+BCA      ACB      ACB      BCA      BAC
+DACB      ACBD      ACBD      DACB      DCBA
+CAB      ABC      ABC      CBA      CBA
+ABC      ABC      ABC      CBA      ACB
+ABC      ABC      BAC      CAB      ABC
+BAC      CBA      CBA      BAC      BAC
+ACB      BAC      BAC      ACB      ABC
+CAB      CAB      CAB      BAC      BAC
+ACB      BCA      BCA      CBA      CBA
+ABC      ACB      ACB      BCA      ABC
+CBA      BAC      BAC      CAB      CBA
+ACB      ABC      ABC      ABC      ABC
+BAC      ACB      ACB      ACB      ACB
+ACB      BAC      BAC      BAC      ABC
+CBA      ABC      ABC      CBA      CBA
+BCA      ACB      ACB      ACB      BCA
+CAB      ABC      ABC      CAB      CAB
+BAC      CAB      CBA      ABC      BAC
+ABC      ABC      ABC      CBA      ACB
+ACB      ACB      ABC      CAB      ABC
+ABC      BAC      BAC      BCA      ABC
+CBA      CAB      CAB      BAC      CAB
+ABC      CAB      CBA      ABC      BAC
+ABC      BCA      CBA      BCA      ABC
+-----------------------------------------
+TOP1:                    0.8  0.275  0.225  0.475
+SORT:                    0.375  0.125  0.125  0.25
+Most landmarks num:      32  11  9  19  /40
+Sort landmark num:       15  5  5  10  /40
+GP Model:                0.1164*x5 + 0.05506*log(abs(x2)) - 0.08084*log(abs(x11)) - 3.078*abs(0.0731*x13 + 0.06319)^(1/2) - 0.07254*x11^2 + 1.265
+Zhang Model:             2*(x1+x2+x3+x4+x5)+x6+x7+x8+x9+x10+x11+x12+x13+x14
+Hao Model:               x1+x2+x3+x4+x5+x6+x7+x8+x9+x10+x11+x12+x13+x14
+SVM Model:                SVM_test_data\5FoldSVMmodel5.dat
+Top1 on validation set:  0.625
+Time(sec):               27.8742   0.0078343   0.0074411   0.86937
+-----------------------------------------
+Run parameters
+Population size:         500
+Number of generations:   30
+Number of runs:          1
+Tournament size:         10
+Elite fraction:          0.02
+Max tree depth:          6
+Max nodes per tree:      6
+Number of inputs:        14
+Max genes:               6
+Constants range:         [0  1]
+GP运行的总次数:          1
