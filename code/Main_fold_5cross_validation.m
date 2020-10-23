@@ -1,8 +1,8 @@
 function Main_fold_5cross_validation()
 clear;
-data=xlsread('..\data\landmarkDataSets.xlsx','featuresAttributes');  % ¶ÁÈ¡ÊôĞÔÌØÕ÷Öµ
-data=gpscale(data); %¹éÒ»»¯»ò±ê×¼»¯
-rank=xlsread('..\data\landmarkDataSets.xlsx','questionnairesResult');  % ¶ÁÈ¡±ÈÀıÅÅĞò
+data=xlsread('..\data\landmarkDataSets.xlsx','featuresAttributes');  % read the attributes of landmarks
+data=gpscale(data); %normalization
+rank=xlsread('..\data\landmarkDataSets.xlsx','questionnairesResult');  % è¯»å–æ¯”ä¾‹æ’åº
 sum_end=0;
 runnum=5;
 dataset=cell(200,2);
@@ -12,7 +12,7 @@ sortresult=zeros(5,4);
 zhang_evalstr='2*(x1+x2+x3+x4+x5)+x6+x7+x8+x9+x10+x11+x12+x13+x14';  %Vir 0.5, Semi 0.25, Stru 0.25
 hao_evalstr='x1+x2+x3+x4+x5+x6+x7+x8+x9+x10+x11+x12+x13+x14';  %Vir 1, Semi 1, Stru 1
 for j=1:size(rank,1)
-    one_rank=rmmissing(rank(j,:));  % »ñµÃÒ»¸ö³¡¾°µÄÅÅĞò²¢È¥µô¿ÕÖµ
+    one_rank=rmmissing(rank(j,:));  % è·å¾—ä¸€ä¸ªåœºæ™¯çš„æ’åºå¹¶å»æ‰ç©ºå€¼
     n=size(one_rank,2);
     sum_end=sum_end+n;
     sum_bef=sum_end-n+1;
@@ -23,15 +23,15 @@ end
 save('5fold_crass\data\dataset','dataset');
 indices = crossvalind('Kfold', 200, 5);
 for i = 1 : 5
-    % »ñÈ¡µÚi·İ²âÊÔÊı¾İµÄË÷ÒıÂß¼­Öµ
+    % è·å–ç¬¬iä»½æµ‹è¯•æ•°æ®çš„ç´¢å¼•é€»è¾‘å€¼
     test = (indices == i);
-    % È¡·´£¬»ñÈ¡µÚi·İÑµÁ·ºÍÑéÖ¤Êı¾İµÄË÷ÒıÂß¼­Öµ
+    % å–åï¼Œè·å–ç¬¬iä»½è®­ç»ƒå’ŒéªŒè¯æ•°æ®çš„ç´¢å¼•é€»è¾‘å€¼
     temp_train = ~test;
-         % »ñÈ¡ÑéÖ¤Êı¾İ
+         % è·å–éªŒè¯æ•°æ®
         indices2 = crossvalind('Kfold',sum(temp_train~=0) , 5);
-         % Ëæ»ú»ñÈ¡ÑéÖ¤Êı¾İµÄË÷ÒıÂß¼­Öµ
+         % éšæœºè·å–éªŒè¯æ•°æ®çš„ç´¢å¼•é€»è¾‘å€¼
         valid=(indices2==randperm(5,1));
-         % È¡·´£¬»ñÈ¡µÚi·İÑµÁ·Êı¾İµÄË÷ÒıÂß¼­Öµ
+         % å–åï¼Œè·å–ç¬¬iä»½è®­ç»ƒæ•°æ®çš„ç´¢å¼•é€»è¾‘å€¼
         train=~valid;
 
     test_porp = cell2mat(dataset(test,1));
@@ -49,21 +49,21 @@ for i = 1 : 5
     save (['5fold_crass\data\Fold',num2str(i),'train_rank'],'train_rank');
     save (['5fold_crass\data\Fold',num2str(i),'val_porp'],'val_porp');
     save (['5fold_crass\data\Fold',num2str(i),'val_rank'],'val_rank');
-    %¶àÖÖ·½·¨²âÊÔ
-    disp(['µÚ',num2str(i),'ÕÛ/¹²',num2str(5),'ÕÛ:']);
-    disp('ÔËĞĞGP·½·¨£º');
+    %å¤šç§æ–¹æ³•æµ‹è¯•
+    disp(['ç¬¬',num2str(i),'æŠ˜/å…±',num2str(5),'æŠ˜:']);
+    disp('è¿è¡ŒGPæ–¹æ³•ï¼š');
     [gp_pre_data,gp_top1,gp_sort,gp_evalstr,gp,runnum,gptoc,valid_acc]=GP(runnum,i,train_porp,train_rank,test_porp,test_rank,val_porp,val_rank);
-    disp('ÔËĞĞ´«Í³Zhang·½·¨£º');
+    disp('è¿è¡Œä¼ ç»ŸZhangæ–¹æ³•ï¼š');
     [zhang_pre_data, zhang_top1,zhang_sort,timesum1]=test_tran_accuracy(zhang_evalstr,test_rank,test_porp,i);
-    disp('ÔËĞĞ´«Í³Hao·½·¨£º');
+    disp('è¿è¡Œä¼ ç»ŸHaoæ–¹æ³•ï¼š');
     [hao_pre_data,hao_top1,hao_sort,timesum2]=test_tran_accuracy(hao_evalstr,test_rank,test_porp,i);
-    disp('ÔËĞĞSVM·½·¨£º');
+    disp('è¿è¡ŒSVMæ–¹æ³•ï¼š');
     [svm_pre_data,svm_top1,svm_sort,svm_evalstr,timesum3]=run_SVM(train_porp,train_rank,test_porp,test_rank,val_porp,val_rank,i);
     disp('----------------------------------------');
-    %Éú³É½á¹ûÎÄ¼ş
+    %ç”Ÿæˆç»“æœæ–‡ä»¶
     build_predata_doc(gp_pre_data,zhang_pre_data,hao_pre_data,svm_pre_data{1,1},i);
     save(['5fold_crass\Fold',num2str(i),'gp_pre_data'],'gp_pre_data');
-    disp('¿ªÊ¼´´½¨ÅÅĞòÎÄ¼ş£º');
+    disp('å¼€å§‹åˆ›å»ºæ’åºæ–‡ä»¶ï¼š');
     [preranks]=build_rank_doc(test_rank,gp_pre_data,gp_top1,gp_sort,gp_evalstr,gp,runnum,i,gptoc,valid_acc, ...
     zhang_pre_data, zhang_top1,zhang_sort,zhang_evalstr,hao_pre_data,hao_top1,hao_sort,hao_evalstr,svm_pre_data{1,1},svm_top1,svm_sort,svm_evalstr,timesum1,timesum2,timesum3);
     top1result(i,:)=[gp_top1,zhang_top1,hao_top1,svm_top1];
